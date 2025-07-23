@@ -1,5 +1,5 @@
-# Claude Python Project Bootstrap Script - PowerShell Version
-# Creates a new Python project configured for Claude TDD + Scrumban workflow
+# Bootstrap Claude Code - Python Projects
+# Creates Python projects with integrated Claude TDD + Scrumban workflow
 
 param(
     [Parameter(Mandatory=$true, Position=0)]
@@ -24,7 +24,7 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 # Source required modules
 try {
     . "$scriptDir\lib\powershell\core.ps1"
-    . "$scriptDir\lib\powershell\python.ps1"  
+    . "$scriptDir\lib\powershell\python.ps1"
     . "$scriptDir\lib\powershell\git.ps1"
     . "$scriptDir\lib\powershell\claude.ps1"
     . "$scriptDir\lib\powershell\templates.ps1"
@@ -32,11 +32,17 @@ try {
 catch {
     Write-Host "Failed to load PowerShell modules: $_" -ForegroundColor Red
     Write-Host "Make sure you're running this script from the bootstrap-claude-code directory" -ForegroundColor Yellow
+    Write-Host "Required modules:" -ForegroundColor Yellow
+    Write-Host "  - lib\powershell\core.ps1" -ForegroundColor Yellow
+    Write-Host "  - lib\powershell\python.ps1" -ForegroundColor Yellow
+    Write-Host "  - lib\powershell\git.ps1" -ForegroundColor Yellow
+    Write-Host "  - lib\powershell\claude.ps1" -ForegroundColor Yellow
+    Write-Host "  - lib\powershell\templates.ps1" -ForegroundColor Yellow
     exit 1
 }
 
 # Main bootstrap function
-function Start-Bootstrap {
+function Start-ModularBootstrap {
     # Parse command line arguments (sets global variables)
     try {
         Set-ProjectArguments -ProjectName $ProjectName -Description $Description -PythonVersion $PythonVersion -Help:$Help
@@ -53,7 +59,7 @@ function Start-Bootstrap {
     
     Write-Status "Creating Claude-managed Python project: $script:PROJECT_NAME"
     Write-Status "Package name: $script:PACKAGE_NAME"
-    Write-Status "Description: $script:PROJECT_DESCRIPTION"
+    Write-Status "Description: $script:PROJECT_DESCRIPTION"  
     Write-Status "Python version: $script:PYTHON_VERSION"
     
     try {
@@ -88,16 +94,16 @@ function Start-Bootstrap {
         }
         
         # Show completion message
-        Show-CompletionMessage
+        Show-ModularCompletionMessage
     }
     catch {
-        Write-Error "Bootstrap failed: $_"
+        Write-Error "Modular bootstrap failed: $_"
         exit 1
     }
 }
 
 # Function to show completion message and next steps
-function Show-CompletionMessage {
+function Show-ModularCompletionMessage {
     Write-Success "Project $script:PROJECT_NAME created successfully!"
     Write-Host ""
     Write-Status "Next steps:"
@@ -118,14 +124,19 @@ function Show-CompletionMessage {
     Write-Host "  /update                                       # Refresh all documentation"
     Write-Host "  /status                                       # Quick status check"
     Write-Host ""
-    Write-Status "Cross-platform notes:"
-    Write-Host "  This project works on Windows (PowerShell) and Unix systems (Bash)"
-    Write-Host "  Use appropriate scripts: .ps1 (Windows) or .sh (Linux/macOS/WSL)"
-    Write-Host "  See README.md for platform-specific instructions"
+    Write-Status "Modular usage (PowerShell):"
+    Write-Host "  Source individual modules from lib\powershell\ for custom workflows"
+    Write-Host "  Example: . .\lib\powershell\core.ps1; . .\lib\powershell\python.ps1"
+    Write-Host "  See README.md for examples of using modules separately"
+    Write-Host ""
+    Write-Status "Cross-platform compatibility:"
+    Write-Host "  Windows: Use .ps1 scripts and PowerShell syntax"
+    Write-Host "  Linux/macOS/WSL: Use .sh scripts and bash syntax"
+    Write-Host "  Both versions create identical project structures"
     Write-Host ""
     Write-Status "Claude instructions:"
     Write-Host "  Tell Claude: 'Read CLAUDE.md and execute /signin [domain] protocol'"
 }
 
 # Run main function
-Start-Bootstrap
+Start-ModularBootstrap

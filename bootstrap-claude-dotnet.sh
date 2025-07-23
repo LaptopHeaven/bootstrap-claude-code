@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Claude .NET Project Bootstrap Script - Bash Modular Version
-# Creates a new .NET 8 project configured for Claude TDD + Scrumban workflow
-# Uses modular architecture for flexibility and reusability
+# Bootstrap Claude Code - .NET Projects
+# Creates .NET 8 projects with integrated Claude TDD + Scrumban workflow
 
 set -e  # Exit on any error
 
@@ -10,7 +9,7 @@ set -e  # Exit on any error
 show_usage() {
     echo "Usage: $0 <project_name> [options]"
     echo ""
-    echo "Creates a new .NET 8 project with Claude TDD + Scrumban workflow (Modular Version)"
+    echo "Creates .NET 8 projects with integrated Claude TDD + Scrumban workflow"
     echo ""
     echo "Arguments:"
     echo "  project_name              Name of the project to create"
@@ -25,10 +24,10 @@ show_usage() {
     echo "  $0 my-console-app -d \"Console application\" -t console"
     echo "  $0 my-web-api -d \"REST API service\" -t webapi"
     echo ""
-    echo "Modular Features:"
-    echo "  - Uses independent modules for .NET, Git, Claude workflow, and templates"
-    echo "  - Same functionality as bootstrap-claude-code-dotnet.sh but with modular architecture"
-    echo "  - Enables custom workflows by combining different modules"
+    echo "Features:"
+    echo "  - Complete .NET 8 project setup with solution, projects, and dependencies"
+    echo "  - Integrated Claude TDD + Scrumban workflow for efficient development"
+    echo "  - Cross-platform development tools and quality gates"
 }
 
 # Parse command line arguments

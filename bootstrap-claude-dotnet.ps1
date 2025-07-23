@@ -1,6 +1,5 @@
-# Claude .NET Project Bootstrap Script - PowerShell Modular Version
-# Creates a new .NET 8 project configured for Claude TDD + Scrumban workflow
-# Uses modular architecture for flexibility and reusability
+# Bootstrap Claude Code - .NET Projects
+# Creates .NET 8 projects with integrated Claude TDD + Scrumban workflow
 
 param(
     [Parameter(Mandatory=$true, Position=0)]
@@ -22,9 +21,9 @@ $ErrorActionPreference = "Stop"
 
 # Show usage information
 function Show-Usage {
-    Write-Host "Usage: .\bootstrap-claude-code-dotnet-modular.ps1 <ProjectName> [options]" -ForegroundColor White
+    Write-Host "Usage: .\bootstrap-claude-dotnet.ps1 <ProjectName> [options]" -ForegroundColor White
     Write-Host ""
-    Write-Host "Creates a new .NET 8 project with Claude TDD + Scrumban workflow (Modular Version)" -ForegroundColor Cyan
+    Write-Host "Creates .NET 8 projects with integrated Claude TDD + Scrumban workflow" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "Parameters:" -ForegroundColor Yellow
     Write-Host "  ProjectName               Name of the project to create" -ForegroundColor White
@@ -35,14 +34,14 @@ function Show-Usage {
     Write-Host "  -Help                     Show this help message" -ForegroundColor White
     Write-Host ""
     Write-Host "Examples:" -ForegroundColor Yellow
-    Write-Host "  .\bootstrap-claude-code-dotnet-modular.ps1 MyAwesomeLibrary -Description 'My awesome .NET library'" -ForegroundColor Green
-    Write-Host "  .\bootstrap-claude-code-dotnet-modular.ps1 MyConsoleApp -Description 'Console application' -ProjectType console" -ForegroundColor Green
-    Write-Host "  .\bootstrap-claude-code-dotnet-modular.ps1 MyWebApi -Description 'REST API service' -ProjectType webapi" -ForegroundColor Green
+    Write-Host "  .\bootstrap-claude-dotnet.ps1 MyAwesomeLibrary -Description 'My awesome .NET library'" -ForegroundColor Green
+    Write-Host "  .\bootstrap-claude-dotnet.ps1 MyConsoleApp -Description 'Console application' -ProjectType console" -ForegroundColor Green
+    Write-Host "  .\bootstrap-claude-dotnet.ps1 MyWebApi -Description 'REST API service' -ProjectType webapi" -ForegroundColor Green
     Write-Host ""
-    Write-Host "Modular Features:" -ForegroundColor Cyan
-    Write-Host "  - Uses independent modules for .NET, Git, Claude workflow, and templates" -ForegroundColor White
-    Write-Host "  - Same functionality as bootstrap-claude-code-dotnet.ps1 but with modular architecture" -ForegroundColor White
-    Write-Host "  - Enables custom workflows by combining different modules" -ForegroundColor White
+    Write-Host "Features:" -ForegroundColor Cyan
+    Write-Host "  - Complete .NET 8 project setup with solution, projects, and dependencies" -ForegroundColor White
+    Write-Host "  - Integrated Claude TDD + Scrumban workflow for efficient development" -ForegroundColor White
+    Write-Host "  - Cross-platform development tools and quality gates" -ForegroundColor White
 }
 
 # Check if help was requested
@@ -203,13 +202,11 @@ This project uses the Claude TDD + Scrumban workflow. See [.claude/CLAUDE.md](.c
     }
 }
 
-# Main modular bootstrap function
-function Start-ModularBootstrap {
-    Write-Status "🔧 Starting modular .NET project bootstrap..."
-    Write-Status "Creating Claude-managed .NET project: $ProjectName"
+# Main bootstrap function
+function Start-Bootstrap {
+    Write-Status "🔧 Creating Claude-managed .NET project: $ProjectName"
     Write-Status "Description: $Description"
     Write-Status "Project type: $ProjectType"
-    Write-Status "Using modular architecture for flexible development workflow"
     
     try {
         # Validate project name using core module
@@ -279,14 +276,7 @@ function Start-ModularBootstrap {
         Write-Status "4. .\scripts\build.ps1   # Build solution"
         Write-Status "5. .\scripts\quality.ps1 # Run quality checks"
         Write-Host ""
-        Write-Status "🚀 Happy coding with Claude using modular architecture!"
-        Write-Host ""
-        Write-Status "💡 Modular Features Used:"
-        Write-Status "   - Core module: Project validation and structure"
-        Write-Status "   - .NET module: Solution and project setup"
-        Write-Status "   - Git module: Repository initialization"
-        Write-Status "   - Claude module: TDD + Scrumban workflow"
-        Write-Status "   - Templates module: Documentation generation"
+        Write-Status "🚀 Happy coding with Claude!"
     }
     catch {
         Write-Error "Bootstrap failed: $_"
@@ -295,4 +285,4 @@ function Start-ModularBootstrap {
 }
 
 # Run the main function
-Start-ModularBootstrap
+Start-Bootstrap

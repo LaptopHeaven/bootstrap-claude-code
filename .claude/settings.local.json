@@ -13,7 +13,15 @@
       "Bash(./bootstrap-claude-code-dotnet.sh:*)",
       "Bash(find:*)",
       "Bash(dotnet build)",
-      "Bash(dotnet test)"
+      "Bash(dotnet test)",
+      "Bash(mv:*)",
+      "Bash(./test-bootstrap.sh:*)",
+      "Bash(pwsh:*)",
+      "Bash(source:*)",
+      "Bash(test_module_loading)",
+      "Bash(./bootstrap-claude-python.sh test-debug:*)",
+      "Bash(grep:*)",
+      "Bash(timeout:*)"
     ],
     "deny": []
   }

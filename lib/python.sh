@@ -3,9 +3,11 @@
 # Python environment setup module for Claude Python Bootstrap
 # Handles virtual environment creation, dependency installation, and Python configuration
 
-# Source core utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/core.sh"
+# Source core utilities (if not already loaded)
+if ! command -v print_status >/dev/null 2>&1; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    source "$SCRIPT_DIR/core.sh"
+fi
 
 # Function to create Python virtual environment
 create_virtual_environment() {
@@ -433,7 +435,15 @@ EOF
 # Function to run initial test verification
 verify_python_setup() {
     print_status "Verifying Python setup..."
-    pytest tests/ -v
+    
+    # Activate virtual environment first
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        source .venv/Scripts/activate
+    else
+        source .venv/bin/activate
+    fi
+    
+    python -m pytest tests/ -v
     if [ $? -eq 0 ]; then
         print_success "Python setup verification passed"
         return 0
