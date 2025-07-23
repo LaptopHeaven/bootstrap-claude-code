@@ -1,10 +1,14 @@
-# Bootstrap Claude Code Python
+# Bootstrap Claude Code
 
-A modular bootstrap script system for creating Python projects with integrated Claude TDD + Scrumban workflow.
+A modular, cross-platform bootstrap system for creating development projects with integrated Claude TDD + Scrumban workflows. Currently supports Python with a flexible architecture designed for easy extension to other languages and project types.
 
 ## Quick Start
 
-### Create a New Project (Full Bootstrap)
+### Python Projects
+
+Bootstrap Claude Code currently provides full support for Python projects. The modular architecture is designed to easily support additional languages in the future.
+
+#### Create a New Python Project
 
 #### Windows (PowerShell)
 ```powershell
@@ -42,7 +46,9 @@ A modular bootstrap script system for creating Python projects with integrated C
 
 ## What Gets Created
 
-The bootstrap scripts create a complete Python project with:
+### Python Projects
+
+The Python bootstrap modules create a complete project with:
 
 - **Python Environment**: Virtual environment, dependencies, pytest configuration
 - **Code Quality**: Black, flake8, mypy, isort with pre-commit hooks
@@ -52,16 +58,41 @@ The bootstrap scripts create a complete Python project with:
 
 ## Architecture Overview
 
-### Core Architecture 
+### Modular Design Philosophy
 
-The modular system follows a layered dependency architecture:
+Bootstrap Claude Code uses a **language-agnostic modular architecture** where:
+- **Core modules** provide shared functionality across all project types
+- **Language-specific modules** handle technology-specific setup
+- **Workflow modules** add development processes (Claude TDD, Git, etc.)
+
+### Current Architecture (Python Implementation)
+
+```
+core.sh (base layer - universal)
+├── python.sh (Python-specific environment)
+├── git.sh (Git repository management - universal)  
+├── claude.sh (Claude workflow files - universal)
+└── templates.sh (Documentation generation - universal)
+```
+
+### Future Architecture Vision
 
 ```
 core.sh (base layer)
-├── python.sh (Python environment setup)
-├── git.sh (Git repository management)  
-├── claude.sh (Claude workflow files)
-└── templates.sh (Documentation generation)
+├── Language Modules:
+│   ├── python.sh (Python projects)
+│   ├── nodejs.sh (Node.js projects) [planned]
+│   ├── golang.sh (Go projects) [planned]
+│   └── rust.sh (Rust projects) [planned]
+├── Universal Modules:
+│   ├── git.sh (Git repository management)
+│   ├── claude.sh (Claude workflow files)
+│   ├── docker.sh (Containerization) [planned]
+│   └── templates.sh (Documentation generation)
+└── Framework Modules:
+    ├── fastapi.sh (FastAPI setup) [planned]
+    ├── react.sh (React setup) [planned]
+    └── django.sh (Django setup) [planned]
 ```
 
 **Dependency Rule**: All modules depend on `core.sh`. Modules at the same level are independent of each other.
@@ -361,17 +392,35 @@ Projects created by this bootstrap include:
 
 ## Benefits of Modular Approach
 
-1. **Flexibility** - Use only what you need
-2. **Reusability** - Compose custom workflows
-3. **Maintainability** - Each module has single responsibility
-4. **Testing** - Can test individual modules
-5. **Extensibility** - Easy to add new modules
+1. **Language Agnostic** - Core system supports any programming language
+2. **Flexibility** - Use only the modules you need for your project
+3. **Reusability** - Compose custom workflows across different tech stacks
+4. **Maintainability** - Each module has single responsibility
+5. **Testing** - Can test individual modules in isolation
+6. **Extensibility** - Easy to add new languages, frameworks, and tools
+7. **Consistency** - Same Claude workflow and quality standards across all project types
 
-## Integration with Original Script
+## Language Support
 
-The original `bootstrap-claude-code-python.sh` remains unchanged and fully functional. The new modular version (`bootstrap-claude-code-python-modular.sh`) provides the same functionality but with a cleaner, more maintainable architecture.
+### Currently Supported
 
-Both scripts produce identical results - the modular version just offers more flexibility for custom use cases.
+- **Python** - Full support with virtual environments, pytest, quality tools, and package management
+
+### Planned Language Support
+
+- **Node.js** - npm/yarn, Jest/Vitest, ESLint, TypeScript support
+- **Go** - Go modules, testing framework, linting tools
+- **Rust** - Cargo, testing, clippy integration
+- **Java** - Maven/Gradle, JUnit, quality tools
+
+### Integration Philosophy
+
+The original `bootstrap-claude-code-python.sh` remains unchanged and fully functional. The modular version provides the same functionality but with an architecture that supports:
+
+- **Multiple languages** through language-specific modules
+- **Custom workflows** by combining different modules
+- **Framework-specific setups** (FastAPI, React, Django, etc.)
+- **Technology stacks** (full-stack combinations)
 
 ## Documentation
 
@@ -423,13 +472,37 @@ diff -r test1/ test2/
 # Compare the generated projects
 ```
 
-### Adding New Modules
+### Adding New Language Support
 
-1. Create `lib/new_module.sh`
-2. Source `lib/core.sh` for shared utilities
-3. Follow the established patterns (error handling, function naming)
-4. Update documentation with new functions
-5. Test integration with existing modules
+#### Adding a New Language Module
+
+1. **Create language module**: `lib/language_name.sh` (e.g., `lib/nodejs.sh`)
+2. **Follow the established patterns**:
+   ```bash
+   source lib/core.sh  # Always source core first
+   
+   # Implement standard functions:
+   setup_language_environment()  # Main orchestrator
+   create_language_project_structure()
+   install_language_dependencies()
+   create_language_config_files()
+   verify_language_setup()
+   ```
+3. **Create bootstrap script**: `bootstrap-claude-code-language-modular.sh`
+4. **Add PowerShell equivalent**: `lib/powershell/language.ps1`
+5. **Update documentation** with new functions and examples
+6. **Test integration** with core and universal modules
+
+#### Adding Framework-Specific Modules
+
+1. **Create framework module**: `lib/framework_name.sh`
+2. **Depend on appropriate language module**:
+   ```bash
+   source lib/core.sh
+   source lib/python.sh  # or nodejs.sh, etc.
+   ```
+3. **Implement framework-specific setup**
+4. **Create examples** showing framework usage
 
 ## License
 
