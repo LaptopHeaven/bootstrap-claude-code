@@ -30,6 +30,54 @@ The bootstrap scripts create a complete Python project with:
 - **Claude Workflow**: Complete TDD + Scrumban workflow system in `.claude/` directory
 - **Documentation**: README, usage guides, development documentation
 
+## Architecture Overview
+
+### Core Architecture 
+
+The modular system follows a layered dependency architecture:
+
+```
+core.sh (base layer)
+├── python.sh (Python environment setup)
+├── git.sh (Git repository management)  
+├── claude.sh (Claude workflow files)
+└── templates.sh (Documentation generation)
+```
+
+**Dependency Rule**: All modules depend on `core.sh`. Modules at the same level are independent of each other.
+
+**Module Communication**: Modules communicate through:
+- Shared global variables set by `parse_arguments()` in core.sh
+- Function return values and exit codes
+- Standard bash error handling patterns
+
+### Function Orchestration Pattern
+The main bootstrap functions follow this orchestration pattern:
+1. **Parse & Validate** - `parse_arguments()` → `validate_inputs()`
+2. **Setup Structure** - `create_basic_structure()` 
+3. **Module Setup** - Each `setup_*_environment()` function handles its domain
+4. **Documentation** - Template generation as final step
+
+### Module Responsibilities
+- **core.sh**: Argument parsing, validation, basic structure, shared utilities
+- **python.sh**: Virtual environments, dependencies, pytest config, package structure  
+- **git.sh**: Repository initialization, hooks, utility scripts, initial commit
+- **claude.sh**: Complete Claude workflow file ecosystem (.claude/ directory structure)
+- **templates.sh**: README, usage docs, development guides
+
+### State Management
+Modules communicate through global variables set in `core.sh`:
+- `PROJECT_NAME` - Validated project name
+- `PROJECT_DESCRIPTION` - Project description  
+- `PYTHON_VERSION` - Target Python version
+- `PACKAGE_NAME` - Python package name (derived from project name)
+
+### Error Handling Pattern
+All modules follow consistent error handling:
+- Functions return 0 for success, 1 for failure
+- `set -e` ensures script exits on any error
+- Colored output functions (`print_error`, `print_success`) provide user feedback
+
 ## Modular Architecture
 
 The system is built with a modular architecture for flexibility:
@@ -245,6 +293,11 @@ The `examples/custom-bootstrap.sh` script demonstrates these patterns:
 # Python-only setup
 ./examples/custom-bootstrap.sh python-only test-lib "Library project"
 ```
+
+### Function Granularity
+Each module provides both granular functions and all-in-one orchestrators:
+- **Granular**: `create_virtual_environment()`, `create_pytest_config()`
+- **Orchestrator**: `setup_python_environment()` (calls multiple granular functions)
 
 ## Generated Project Features
 
