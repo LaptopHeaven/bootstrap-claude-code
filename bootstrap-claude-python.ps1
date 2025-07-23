@@ -18,6 +18,39 @@ param(
 # Set error action preference for better error handling
 $ErrorActionPreference = "Stop"
 
+# Show usage information
+function Show-Usage {
+    Write-Host "Usage: .\bootstrap-claude-python.ps1 <ProjectName> [options]" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Creates Python projects with integrated Claude TDD + Scrumban workflow" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Parameters:" -ForegroundColor Yellow
+    Write-Host "  ProjectName               Name of the project to create" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Options:" -ForegroundColor Yellow
+    Write-Host "  -Description <desc>       Project description" -ForegroundColor White
+    Write-Host "  -PythonVersion <version>  Python version (default: 3.12)" -ForegroundColor White
+    Write-Host "  -Help                     Show this help message" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Examples:" -ForegroundColor Yellow
+    Write-Host "  .\bootstrap-claude-python.ps1 MyAwesomeApi -Description 'REST API for awesome things'" -ForegroundColor Green
+    Write-Host "  .\bootstrap-claude-python.ps1 DataProcessor -Description 'Data processing pipeline' -PythonVersion 3.11" -ForegroundColor Green
+    Write-Host "  .\bootstrap-claude-python.ps1 MlExperiment -Description 'Machine learning experiment' -PythonVersion 3.12" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Features:" -ForegroundColor Cyan
+    Write-Host "  - Complete Python project setup with virtual environment and dependencies" -ForegroundColor White
+    Write-Host "  - Integrated Claude TDD + Scrumban workflow for efficient development" -ForegroundColor White
+    Write-Host "  - Cross-platform development tools and quality gates" -ForegroundColor White
+    Write-Host "  - Pytest testing framework with coverage reporting" -ForegroundColor White
+    Write-Host "  - Code quality tools: Black, flake8, mypy, isort" -ForegroundColor White
+}
+
+# Check if help was requested
+if ($Help) {
+    Show-Usage
+    exit 0
+}
+
 # Get script directory for sourcing modules
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 

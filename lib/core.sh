@@ -38,11 +38,15 @@ validate_project_name() {
     
     if [ -z "$project_name" ]; then
         print_error "Project name is required"
+        echo ""
+        show_usage
         return 1
     fi
     
     if [[ ! "$project_name" =~ ^[a-z][a-z0-9_-]*$ ]]; then
         print_error "Project name must start with a letter and contain only lowercase letters, numbers, hyphens, and underscores"
+        echo ""
+        show_usage
         return 1
     fi
     
@@ -110,13 +114,27 @@ get_package_name() {
 show_usage() {
     echo "Usage: $0 <project_name> [options]"
     echo ""
-    echo "Options:"
-    echo "  -d, --description <desc>   Project description"
-    echo "  -p, --python <version>     Python version (default: 3.12)"
-    echo "  -h, --help                 Show this help"
+    echo "Creates Python projects with integrated Claude TDD + Scrumban workflow"
     echo ""
-    echo "Example:"
-    echo "  $0 my-awesome-api -d \"REST API for awesome things\" -p 3.11"
+    echo "Arguments:"
+    echo "  project_name              Name of the project to create"
+    echo ""
+    echo "Options:"
+    echo "  -d, --description <desc>  Project description"
+    echo "  -p, --python <version>    Python version (default: 3.12)"
+    echo "  -h, --help                Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  $0 my-awesome-api -d \"REST API for awesome things\""
+    echo "  $0 data-processor -d \"Data processing pipeline\" -p 3.11"
+    echo "  $0 ml-experiment -d \"Machine learning experiment\" -p 3.12"
+    echo ""
+    echo "Features:"
+    echo "  - Complete Python project setup with virtual environment and dependencies"
+    echo "  - Integrated Claude TDD + Scrumban workflow for efficient development"
+    echo "  - Cross-platform development tools and quality gates"
+    echo "  - Pytest testing framework with coverage reporting"
+    echo "  - Code quality tools: Black, flake8, mypy, isort"
 }
 
 # Function to parse command line arguments

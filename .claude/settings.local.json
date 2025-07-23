@@ -21,7 +21,10 @@
       "Bash(test_module_loading)",
       "Bash(./bootstrap-claude-python.sh test-debug:*)",
       "Bash(grep:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git commit:*)",
+      "Bash(./bootstrap-claude-dotnet.sh:*)",
+      "Bash(./bootstrap-claude-python.sh:*)"
     ],
     "deny": []
   }

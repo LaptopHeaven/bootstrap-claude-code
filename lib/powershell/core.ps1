@@ -49,15 +49,32 @@ function Test-ProjectName {
     
     if ([string]::IsNullOrEmpty($ProjectName)) {
         Write-Error "Project name is required"
+        Write-Host ""
+        Show-PowerShellUsage
         return $false
     }
     
     if ($ProjectName -notmatch '^[a-z][a-z0-9_-]*$') {
         Write-Error "Project name must start with a letter and contain only lowercase letters, numbers, hyphens, and underscores"
+        Write-Host ""
+        Show-PowerShellUsage
         return $false
     }
     
     return $true
+}
+
+# Function to show PowerShell usage (generic version for core module)
+function Show-PowerShellUsage {
+    Write-Host "Usage: .\bootstrap-claude-<language>.ps1 <ProjectName> [options]" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Creates projects with integrated Claude TDD + Scrumban workflow" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Available bootstrap scripts:" -ForegroundColor Yellow
+    Write-Host "  .\bootstrap-claude-python.ps1 <ProjectName> -Help    # Python projects" -ForegroundColor Green
+    Write-Host "  .\bootstrap-claude-dotnet.ps1 <ProjectName> -Help    # .NET 8 projects" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Use -Help with specific scripts for detailed options and examples." -ForegroundColor Cyan
 }
 
 # Function to check prerequisites
