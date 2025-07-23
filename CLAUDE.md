@@ -17,19 +17,44 @@ The modular system has a `core.sh` base layer with four independent modules: `py
 ## Key Commands
 
 ### Testing the Bootstrap Scripts
-```bash
-# Test original monolithic version
-./bootstrap-claude-python.sh test-project -d "Test description"
 
-# Test modular version (should produce identical results)
+#### Windows (PowerShell)
+```powershell
+# Test PowerShell versions
+.\bootstrap-claude-python.ps1 test-project -Description "Test description"
+.\bootstrap-claude-python-modular.ps1 test-project -Description "Test description"
+
+# Test individual module usage
+.\examples\custom-bootstrap.ps1 simple test-simple -Description "Simple project"
+.\examples\custom-bootstrap.ps1 python-only test-env -Description "Python only"
+```
+
+#### Linux/macOS/WSL (Bash)
+```bash
+# Test bash versions
+./bootstrap-claude-python.sh test-project -d "Test description"
 ./bootstrap-claude-python-modular.sh test-project -d "Test description"
 
 # Test individual module usage
-./examples/custom-bootstrap.sh simple test-simple "Simple project"
+./examples/custom-bootstrap.sh simple test-simple "Simple project"  
 ./examples/custom-bootstrap.sh python-only test-env "Python only"
 ```
 
 ### Development and Testing
+
+#### PowerShell Development
+```powershell
+# Test module sourcing (for development)
+. .\lib\powershell\core.ps1
+Test-ProjectName "test-name"
+
+# Source individual modules for testing
+. .\lib\powershell\core.ps1
+. .\lib\powershell\python.ps1
+# Test specific functions...
+```
+
+#### Bash Development  
 ```bash
 # Make scripts executable
 chmod +x bootstrap-claude-python.sh bootstrap-claude-python-modular.sh examples/custom-bootstrap.sh
@@ -37,12 +62,6 @@ chmod +x bootstrap-claude-python.sh bootstrap-claude-python-modular.sh examples/
 # Test module sourcing (for development)
 source lib/core.sh && validate_project_name "test-name"
 
-# Verify both scripts produce identical output
-diff -r project1/ project2/  # After creating with both scripts
-```
-
-### Module Development
-```bash
 # Source individual modules for testing
 source lib/core.sh
 source lib/python.sh
@@ -52,9 +71,20 @@ source lib/python.sh
 grep -r "source.*lib/" lib/  # Find inter-module dependencies
 ```
 
+### Cross-Platform Testing
+```bash
+# Verify both PowerShell and bash scripts produce equivalent output
+# (Directory structures should be identical, only script syntax differs)
+```
+
 ## Architecture Details
 
-The scripts follow a **Parse & Validate → Setup Structure → Module Setup → Documentation** pattern. Each module has both granular functions and orchestrator functions (e.g., `setup_python_environment()` calls multiple specific functions). All functions return 0/1 for success/failure with `set -e` error handling.
+The scripts follow a **Parse & Validate → Setup Structure → Module Setup → Documentation** pattern. Each module has both granular functions and orchestrator functions. 
+
+**Platform Differences:**
+- **PowerShell**: Functions return `$true`/`$false`, uses `$ErrorActionPreference = "Stop"`
+- **Bash**: Functions return 0/1, uses `set -e` error handling
+- **Generated Content**: Identical project structures across platforms
 
 ## Generated Project Structure
 

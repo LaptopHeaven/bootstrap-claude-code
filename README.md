@@ -5,6 +5,17 @@ A modular bootstrap script system for creating Python projects with integrated C
 ## Quick Start
 
 ### Create a New Project (Full Bootstrap)
+
+#### Windows (PowerShell)
+```powershell
+# Using the modular version (recommended)
+.\bootstrap-claude-python-modular.ps1 my-awesome-project -Description "My awesome Python project"
+
+# Using the original version (same result)
+.\bootstrap-claude-python.ps1 my-awesome-project -Description "My awesome Python project"
+```
+
+#### Linux/macOS/WSL (Bash)
 ```bash
 # Using the modular version (recommended)
 ./bootstrap-claude-python-modular.sh my-awesome-project -d "My awesome Python project"
@@ -14,6 +25,15 @@ A modular bootstrap script system for creating Python projects with integrated C
 ```
 
 ### Options
+
+#### PowerShell Options
+```powershell
+-Description <desc>    # Project description
+-PythonVersion <ver>   # Python version (default: 3.12)
+-Help                  # Show help
+```
+
+#### Bash Options
 ```bash
 -d, --description <desc>   # Project description
 -p, --python <version>     # Python version (default: 3.12)
@@ -210,7 +230,46 @@ create_all_templates "project" "description" "3.12" "package_name"
 
 ## Custom Workflow Examples
 
-### 1. Simple Python Project (No Claude Workflow)
+### Windows (PowerShell) Examples
+
+#### 1. Simple Python Project (No Claude Workflow)
+```powershell
+# Source required modules
+. .\lib\powershell\core.ps1
+. .\lib\powershell\python.ps1
+. .\lib\powershell\git.ps1
+
+# Set project parameters
+Set-ProjectArguments -ProjectName "simple-project" -Description "Simple Python project"
+$packageName = Get-PackageName $script:PROJECT_NAME
+
+# Create and setup
+New-BasicStructure $script:PROJECT_NAME $packageName
+Set-Location $script:PROJECT_NAME
+Initialize-PythonEnvironment $script:PROJECT_NAME $script:PROJECT_DESCRIPTION $script:PYTHON_VERSION
+Initialize-GitEnvironment $script:PROJECT_NAME
+
+Write-Host "Simple Python project created!"
+```
+
+#### 2. Add Claude Workflow to Existing Project
+```powershell
+# Source required modules
+. .\lib\powershell\core.ps1
+. .\lib\powershell\claude.ps1
+
+if (Test-Path "existing-project") {
+    Set-Location existing-project
+    Initialize-ClaudeWorkflowFiles "existing-project" "Add Claude workflow" "3.12"
+    Write-Host "Claude workflow added!"
+} else {
+    Write-Host "Project directory not found"
+}
+```
+
+### Linux/macOS/WSL (Bash) Examples
+
+#### 1. Simple Python Project (No Claude Workflow)
 ```bash
 #!/bin/bash
 source lib/core.sh
@@ -230,7 +289,7 @@ setup_git_environment "$PROJECT_NAME"
 echo "Simple Python project created!"
 ```
 
-### 2. Add Claude Workflow to Existing Project
+#### 2. Add Claude Workflow to Existing Project
 ```bash
 #!/bin/bash
 source lib/core.sh
@@ -245,44 +304,21 @@ else
 fi
 ```
 
-### 3. Python Environment Only (No Git/Claude)
-```bash
-#!/bin/bash
-source lib/core.sh
-source lib/python.sh
-
-PROJECT_NAME="python-only"
-PACKAGE_NAME=$(get_package_name "$PROJECT_NAME")
-
-create_basic_structure "$PROJECT_NAME" "$PACKAGE_NAME"
-cd "$PROJECT_NAME"
-
-# Individual Python setup functions
-create_virtual_environment
-upgrade_pip
-create_requirements_files "3.12"
-install_dev_dependencies
-create_python_package "$PACKAGE_NAME" "$PROJECT_NAME" "Python-only project"
-create_sample_tests "$PACKAGE_NAME" "$PROJECT_NAME"
-
-echo "Python environment ready!"
-```
-
-### 4. Documentation Only
-```bash
-#!/bin/bash
-source lib/core.sh
-source lib/templates.sh
-
-cd existing-project
-create_all_templates "existing-project" "Add documentation" "3.12" "existing_project"
-echo "Documentation added!"
-```
-
 ### Running the Examples
 
-The `examples/custom-bootstrap.sh` script demonstrates these patterns:
+#### Windows (PowerShell)
+```powershell
+# Create simple Python project
+.\examples\custom-bootstrap.ps1 simple my-api -Description "REST API project"
 
+# Add Claude workflow to existing project  
+.\examples\custom-bootstrap.ps1 add-claude existing-project
+
+# Python-only setup
+.\examples\custom-bootstrap.ps1 python-only test-lib -Description "Library project"
+```
+
+#### Linux/macOS/WSL (Bash)
 ```bash
 # Create simple Python project
 ./examples/custom-bootstrap.sh simple my-api "REST API project"
@@ -344,14 +380,31 @@ Both scripts produce identical results - the modular version just offers more fl
 
 ## Requirements
 
-- Python 3.12+ (configurable)
+### All Platforms
+- Python 3.12+ (configurable, also supports 3.11+)
 - Git
-- Bash shell
+
+### Platform-Specific Requirements
+- **Windows:** PowerShell 5.1+ (PowerShell 7+ recommended)
+- **Linux/macOS/WSL:** Bash shell
+- **Windows with Git Bash:** Bash shell (alternative to PowerShell)
 
 ## Development
 
 ### Testing the Bootstrap Scripts
 
+#### Windows (PowerShell)
+```powershell
+# Test both versions produce identical results
+.\bootstrap-claude-python.ps1 test1 -Description "Test project"
+.\bootstrap-claude-python-modular.ps1 test2 -Description "Test project"
+# Compare directories manually or use tools like WinMerge
+
+# Test custom workflows
+.\examples\custom-bootstrap.ps1 simple test-simple -Description "Simple project"
+```
+
+#### Linux/macOS/WSL (Bash)
 ```bash
 # Test both versions produce identical results
 ./bootstrap-claude-python.sh test1 -d "Test project"
@@ -360,6 +413,14 @@ diff -r test1/ test2/
 
 # Test custom workflows
 ./examples/custom-bootstrap.sh simple test-simple "Simple project"
+```
+
+#### Cross-Platform Testing
+```bash
+# Test both PowerShell and Bash versions create identical projects
+.\bootstrap-claude-python.ps1 test-ps -Description "PowerShell test"
+./bootstrap-claude-python.sh test-bash -d "Bash test"
+# Compare the generated projects
 ```
 
 ### Adding New Modules
