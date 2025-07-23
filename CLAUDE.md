@@ -145,7 +145,7 @@ Each module provides both granular functions and all-in-one orchestrators:
 - Maintain backward compatibility for orchestrator functions
 - New functionality should be additive, not breaking
 - Test both modular and monolithic scripts still produce identical results
-- Update `MODULE_USAGE.md` with new function documentation
+- Update `README.md` with new function documentation
 
 ### Testing Strategy
 - Create test projects with both scripts and compare outputs
