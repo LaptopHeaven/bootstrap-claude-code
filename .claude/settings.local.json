@@ -1,9 +1,20 @@
 {
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(chmod:*)",
+      "Bash(bash:*)",
+      "Bash(./bootstrap-claude-code-dotnet-modular.sh test-dotnet-lib:*)",
+      "Bash(ls:*)",
+      "Bash(rm:*)",
+      "Bash(./bootstrap-claude-code-dotnet.sh:*)",
+      "Bash(find:*)",
+      "Bash(dotnet build)",
+      "Bash(dotnet test)"
     ],
     "deny": []
-  },
-  "includeCoAuthoredBy": false
+  }
 }

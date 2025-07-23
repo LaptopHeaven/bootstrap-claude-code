@@ -1,12 +1,10 @@
 # Bootstrap Claude Code
 
-A modular, cross-platform bootstrap system for creating development projects with integrated Claude TDD + Scrumban workflows. Currently supports Python with a flexible architecture designed for easy extension to other languages and project types.
+A modular, cross-platform bootstrap system for creating development projects with integrated Claude TDD + Scrumban workflows. Currently supports Python and .NET 8 with a flexible architecture designed for easy extension to other languages and project types.
 
 ## Quick Start
 
 ### Python Projects
-
-Bootstrap Claude Code currently provides full support for Python projects. The modular architecture is designed to easily support additional languages in the future.
 
 #### Create a New Python Project
 
@@ -28,19 +26,63 @@ Bootstrap Claude Code currently provides full support for Python projects. The m
 ./bootstrap-claude-code-python.sh my-awesome-project -d "My awesome Python project"
 ```
 
+### .NET 8 Projects
+
+#### Create a New .NET Project
+
+#### Windows (PowerShell)
+```powershell
+# Using the modular version (recommended)
+.\bootstrap-claude-code-dotnet-modular.ps1 MyAwesomeLibrary -Description "My awesome .NET library"
+
+# Using the original version (same result)
+.\bootstrap-claude-code-dotnet.ps1 MyAwesomeLibrary -Description "My awesome .NET library"
+
+# Create different project types
+.\bootstrap-claude-code-dotnet.ps1 MyConsoleApp -Description "Console application" -ProjectType console
+.\bootstrap-claude-code-dotnet.ps1 MyWebApi -Description "REST API service" -ProjectType webapi
+```
+
+#### Linux/macOS/WSL (Bash)
+```bash
+# Using the modular version (recommended)
+./bootstrap-claude-code-dotnet-modular.sh my-awesome-library -d "My awesome .NET library"
+
+# Using the original version (same result)
+./bootstrap-claude-code-dotnet.sh my-awesome-library -d "My awesome .NET library"
+
+# Create different project types
+./bootstrap-claude-code-dotnet.sh my-console-app -d "Console application" -t console
+./bootstrap-claude-code-dotnet.sh my-web-api -d "REST API service" -t webapi
+```
+
 ### Options
 
-#### PowerShell Options
+#### Python Options (PowerShell)
 ```powershell
 -Description <desc>    # Project description
 -PythonVersion <ver>   # Python version (default: 3.12)
 -Help                  # Show help
 ```
 
-#### Bash Options
+#### Python Options (Bash)
 ```bash
 -d, --description <desc>   # Project description
 -p, --python <version>     # Python version (default: 3.12)
+-h, --help                 # Show help
+```
+
+#### .NET Options (PowerShell)
+```powershell
+-Description <desc>    # Project description
+-ProjectType <type>    # Project type (classlib, console, webapi, mvc, api) [default: classlib]
+-Help                  # Show help
+```
+
+#### .NET Options (Bash)
+```bash
+-d, --description <desc>   # Project description
+-t, --type <type>          # Project type (classlib, console, webapi) [default: classlib]
 -h, --help                 # Show help
 ```
 
@@ -56,6 +98,18 @@ The Python bootstrap modules create a complete project with:
 - **Claude Workflow**: Complete TDD + Scrumban workflow system in `.claude/` directory
 - **Documentation**: README, usage guides, development documentation
 
+### .NET 8 Projects
+
+The .NET bootstrap modules create a complete project with:
+
+- **.NET Environment**: .NET 8 solution with class library/console/webapi templates
+- **Testing Framework**: xUnit with FluentAssertions, Moq, and code coverage
+- **Code Quality**: EditorConfig, code analyzers, consistent formatting
+- **Configuration**: Global.json, Directory.Build.props for shared settings
+- **Git Integration**: Repository, .NET-specific .gitignore, utility scripts
+- **Claude Workflow**: Complete TDD + Scrumban workflow system in `.claude/` directory
+- **Documentation**: README, API documentation, development guides
+
 ## Architecture Overview
 
 ### Modular Design Philosophy
@@ -65,11 +119,12 @@ Bootstrap Claude Code uses a **language-agnostic modular architecture** where:
 - **Language-specific modules** handle technology-specific setup
 - **Workflow modules** add development processes (Claude TDD, Git, etc.)
 
-### Current Architecture (Python Implementation)
+### Current Architecture (Multi-Language Implementation)
 
 ```
 core.sh (base layer - universal)
 ├── python.sh (Python-specific environment)
+├── dotnet.sh (.NET 8-specific environment)
 ├── git.sh (Git repository management - universal)  
 ├── claude.sh (Claude workflow files - universal)
 └── templates.sh (Documentation generation - universal)
@@ -81,6 +136,7 @@ core.sh (base layer - universal)
 core.sh (base layer)
 ├── Language Modules:
 │   ├── python.sh (Python projects)
+│   ├── dotnet.sh (.NET 8 projects)
 │   ├── nodejs.sh (Node.js projects) [planned]
 │   ├── golang.sh (Go projects) [planned]
 │   └── rust.sh (Rust projects) [planned]
@@ -111,7 +167,8 @@ The main bootstrap functions follow this orchestration pattern:
 
 ### Module Responsibilities
 - **core.sh**: Argument parsing, validation, basic structure, shared utilities
-- **python.sh**: Virtual environments, dependencies, pytest config, package structure  
+- **python.sh**: Virtual environments, dependencies, pytest config, package structure
+- **dotnet.sh**: .NET solutions, NuGet packages, xUnit testing, code analyzers
 - **git.sh**: Repository initialization, hooks, utility scripts, initial commit
 - **claude.sh**: Complete Claude workflow file ecosystem (.claude/ directory structure)
 - **templates.sh**: README, usage docs, development guides
@@ -137,6 +194,7 @@ The system is built with a modular architecture for flexibility:
 lib/
 ├── core.sh      # Shared utilities, validation, colors
 ├── python.sh    # Python environment setup
+├── dotnet.sh    # .NET 8 environment setup
 ├── git.sh       # Git repository management
 ├── claude.sh    # Claude workflow files
 └── templates.sh # Documentation templates
@@ -146,6 +204,7 @@ lib/
 
 - **core.sh** - No dependencies (base module)
 - **python.sh** - Requires core.sh
+- **dotnet.sh** - Requires core.sh
 - **git.sh** - Requires core.sh  
 - **claude.sh** - Requires core.sh
 - **templates.sh** - Requires core.sh
@@ -155,7 +214,7 @@ Always source core.sh first, then any other modules you need.
 ### Using Individual Modules
 
 ```bash
-# Source the modules you need
+# Source the modules you need (Python example)
 source lib/core.sh
 source lib/python.sh
 source lib/claude.sh
@@ -166,6 +225,19 @@ create_basic_structure "my-project" "my_project"
 cd my-project
 setup_python_environment "my-project" "Description" "3.12"
 create_claude_workflow_files "my-project" "Description" "3.12"
+
+# .NET example
+source lib/core.sh
+source lib/dotnet.sh
+source lib/claude.sh
+
+# Use specific functions
+validate_project_name "my-dotnet-project"
+PACKAGE_NAME=$(get_package_name "my-dotnet-project")
+create_basic_structure "my-dotnet-project" "$PACKAGE_NAME"
+cd my-dotnet-project
+setup_dotnet_environment "my-dotnet-project" "Description" "classlib"
+create_claude_workflow_files "my-dotnet-project" "Description" "net8.0"
 ```
 
 ## Module Function Reference
@@ -214,6 +286,29 @@ verify_python_setup
 
 # All-in-one function
 setup_python_environment "project" "description" "3.12"
+```
+
+### lib/dotnet.sh - .NET Environment
+```bash
+# Prerequisites and project creation
+check_dotnet_prerequisites
+create_dotnet_project "project" "classlib"
+
+# Configuration files
+create_global_json
+create_directory_build_props "project" "description"
+create_editorconfig
+
+# Dependencies and utilities
+setup_dotnet_dependencies "project"
+create_dotnet_utility_scripts
+create_dotnet_gitignore
+
+# Verification
+verify_dotnet_setup
+
+# All-in-one function
+setup_dotnet_environment "project" "description" "classlib"
 ```
 
 ### lib/git.sh - Git Management
@@ -405,6 +500,7 @@ Projects created by this bootstrap include:
 ### Currently Supported
 
 - **Python** - Full support with virtual environments, pytest, quality tools, and package management
+- **.NET 8** - Full support with solutions, xUnit testing, code analyzers, and NuGet package management
 
 ### Planned Language Support
 
@@ -430,8 +526,13 @@ The original `bootstrap-claude-code-python.sh` remains unchanged and fully funct
 ## Requirements
 
 ### All Platforms
-- Python 3.12+ (configurable, also supports 3.11+)
 - Git
+
+### For Python Projects
+- Python 3.12+ (configurable, also supports 3.11+)
+
+### For .NET Projects
+- .NET 8 SDK
 
 ### Platform-Specific Requirements
 - **Windows:** PowerShell 5.1+ (PowerShell 7+ recommended)
@@ -444,9 +545,14 @@ The original `bootstrap-claude-code-python.sh` remains unchanged and fully funct
 
 #### Windows (PowerShell)
 ```powershell
-# Test both versions produce identical results
+# Test Python versions produce identical results
 .\bootstrap-claude-code-python.ps1 test1 -Description "Test project"
 .\bootstrap-claude-code-python-modular.ps1 test2 -Description "Test project"
+
+# Test .NET versions produce identical results
+.\bootstrap-claude-code-dotnet.ps1 test3 -Description "Test .NET project"
+.\bootstrap-claude-code-dotnet-modular.ps1 test4 -Description "Test .NET project"
+
 # Compare directories manually or use tools like WinMerge
 
 # Test custom workflows
@@ -455,10 +561,15 @@ The original `bootstrap-claude-code-python.sh` remains unchanged and fully funct
 
 #### Linux/macOS/WSL (Bash)
 ```bash
-# Test both versions produce identical results
+# Test Python versions produce identical results
 ./bootstrap-claude-code-python.sh test1 -d "Test project"
 ./bootstrap-claude-code-python-modular.sh test2 -d "Test project"
 diff -r test1/ test2/
+
+# Test .NET versions produce identical results
+./bootstrap-claude-code-dotnet.sh test3 -d "Test .NET project"
+./bootstrap-claude-code-dotnet-modular.sh test4 -d "Test .NET project"
+diff -r test3/ test4/
 
 # Test custom workflows
 ./examples/custom-bootstrap.sh simple test-simple "Simple project"
@@ -467,8 +578,15 @@ diff -r test1/ test2/
 #### Cross-Platform Testing
 ```bash
 # Test both PowerShell and Bash versions create identical projects
+
+# Python projects
 .\bootstrap-claude-code-python.ps1 test-ps -Description "PowerShell test"
 ./bootstrap-claude-code-python.sh test-bash -d "Bash test"
+
+# .NET projects
+.\bootstrap-claude-code-dotnet.ps1 test-dotnet-ps -Description "PowerShell .NET test"
+./bootstrap-claude-code-dotnet.sh test-dotnet-bash -d "Bash .NET test"
+
 # Compare the generated projects
 ```
 

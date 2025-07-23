@@ -3,9 +3,11 @@
 # Templates module for Claude Python Bootstrap
 # Creates README and other documentation templates
 
-# Source core utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/core.sh"
+# Source core utilities (if not already loaded)
+if ! command -v print_status >/dev/null 2>&1; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    source "$SCRIPT_DIR/core.sh"
+fi
 
 # Function to create README.md
 create_readme() {

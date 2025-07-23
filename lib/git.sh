@@ -3,9 +3,11 @@
 # Git repository management module for Claude Python Bootstrap
 # Handles git initialization, hooks setup, and initial commit
 
-# Source core utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/core.sh"
+# Source core utilities (if not already loaded)
+if ! command -v print_status >/dev/null 2>&1; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    source "$SCRIPT_DIR/core.sh"
+fi
 
 # Function to initialize git repository
 initialize_git_repository() {
