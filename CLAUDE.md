@@ -4,15 +4,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a modular Bootstrap script system for creating Python projects with integrated Claude TDD + Scrumban workflow. The codebase consists of:
+This is a **dual-platform** modular Bootstrap script system for creating Python projects with integrated Claude TDD + Scrumban workflow. The codebase consists of:
 
+### Bash Implementation (Linux/macOS/WSL)
 - **Original monolithic bootstrap script** (`bootstrap-claude-python.sh`) - Single-file implementation
 - **Modular bootstrap system** (`bootstrap-claude-python-modular.sh` + `lib/` modules) - Refactored for flexibility
 - **Usage examples** (`examples/custom-bootstrap.sh`) - Demonstrates modular usage patterns
 
+### PowerShell Implementation (Windows)
+- **PowerShell bootstrap scripts** (`bootstrap-claude-python.ps1`, `bootstrap-claude-python-modular.ps1`) - Native Windows versions
+- **PowerShell modules** (`lib/powershell/` modules) - PowerShell-native implementations
+- **PowerShell examples** (`examples/custom-bootstrap.ps1`) - Windows-specific usage patterns
+
+**Critical**: Both implementations must be maintained in parallel. Any feature changes, bug fixes, or new functionality MUST be implemented in both bash and PowerShell versions.
+
 ## Core Architecture 
 
-The modular system has a `core.sh` base layer with four independent modules: `python.sh`, `git.sh`, `claude.sh`, and `templates.sh`. All modules depend on `core.sh` for shared utilities and communicate through global variables set by `parse_arguments()`.
+The modular system has parallel implementations:
+
+### Bash Architecture (`lib/`)
+- `core.sh` base layer with four independent modules: `python.sh`, `git.sh`, `claude.sh`, and `templates.sh`
+- All modules depend on `core.sh` for shared utilities and communicate through global variables set by `parse_arguments()`
+
+### PowerShell Architecture (`lib/powershell/`)
+- `core.ps1` base layer with four independent modules: `python.ps1`, `git.ps1`, `claude.ps1`, and `templates.ps1`
+- All modules depend on `core.ps1` for shared utilities and communicate through script-scoped variables set by `Set-ProjectArguments`
+
+**Both architectures must remain functionally equivalent and produce identical project structures.**
 
 ## Key Commands
 
@@ -103,27 +121,72 @@ project-name/
 
 ## Modular Usage Patterns
 
-**Individual Module Usage**: Always source `lib/core.sh` first, then required modules. Use orchestrator functions (`setup_*_environment()`) for complete setups or granular functions for specific tasks.
+### Bash Module Usage
+- Always source `lib/core.sh` first, then required modules
+- Use orchestrator functions (`setup_*_environment()`) for complete setups or granular functions for specific tasks
+- Example: `source lib/core.sh && source lib/python.sh`
 
-**Custom Workflows**: The `examples/custom-bootstrap.sh` demonstrates three patterns - Simple (Python + Git), Add Claude (retrofit workflow), and Python-only (no Git/Claude).
+### PowerShell Module Usage  
+- Always dot-source `lib/powershell/core.ps1` first, then required modules
+- Use orchestrator functions (`Initialize-*Environment`) for complete setups or granular functions for specific tasks
+- Example: `. .\lib\powershell\core.ps1; . .\lib\powershell\python.ps1`
+
+### Custom Workflows
+Both `examples/custom-bootstrap.sh` (bash) and `examples/custom-bootstrap.ps1` (PowerShell) demonstrate three patterns:
+- **Simple**: Python + Git, no Claude workflow
+- **Add Claude**: Retrofit workflow to existing project  
+- **Python-only**: Just Python environment, no Git/Claude
 
 ## Development Guidelines
 
+### ⚠️ CRITICAL: Dual-Platform Development Rules
+
+**ALWAYS implement changes in BOTH platforms:**
+1. **Any new feature** → Add to both `lib/module.sh` AND `lib/powershell/module.ps1`
+2. **Any bug fix** → Fix in both bash and PowerShell versions
+3. **Any function change** → Update both implementations with equivalent functionality
+4. **Any new module** → Create both `.sh` and `.ps1` versions
+
 ### Adding New Modules
+**Bash Version (`lib/`):**
 1. Follow the naming pattern: `lib/module_name.sh`
 2. Source `lib/core.sh` at the top for shared utilities
 3. Provide both granular functions and one main orchestrator function
 4. Follow the error handling pattern (return codes + `set -e`)
 5. Use the established color output functions
 
-### Modifying Existing Modules  
-- Maintain backward compatibility for orchestrator functions
-- New functionality should be additive, not breaking
-- Test both modular and monolithic scripts still produce identical results
-- Update `README.md` with new function documentation
+**PowerShell Version (`lib/powershell/`):**
+1. Follow the naming pattern: `lib/powershell/module_name.ps1`
+2. Dot-source `lib/powershell/core.ps1` at the top for shared utilities
+3. Provide both granular functions and one main orchestrator function (use `Initialize-*` naming)
+4. Follow the error handling pattern (`$true`/`$false` returns + `$ErrorActionPreference = "Stop"`)
+5. Use the established colored output functions (`Write-Status`, etc.)
 
-### Testing Strategy
-- Create test projects with both scripts and compare outputs
-- Test individual module functions in isolation
-- Verify the generated projects actually work (run their tests, quality checks)
-- Test custom workflow examples in `examples/custom-bootstrap.sh`
+### Modifying Existing Modules  
+- **Maintain parallel functionality** across both bash and PowerShell versions
+- **Maintain backward compatibility** for orchestrator functions in both platforms
+- **New functionality should be additive, not breaking** in both implementations
+- **Test both bash and PowerShell scripts** produce identical project structures
+- **Update `README.md`** with platform-specific function documentation for both versions
+
+### Testing Strategy (BOTH PLATFORMS REQUIRED)
+- **Create test projects with both bash and PowerShell scripts** and compare outputs
+- **Test individual module functions in isolation** for both platforms
+- **Verify the generated projects actually work** (run their tests, quality checks) on both platforms
+- **Test custom workflow examples** in both `examples/custom-bootstrap.sh` AND `examples/custom-bootstrap.ps1`
+- **Cross-platform testing**: Ensure bash and PowerShell versions create equivalent projects
+
+### Function Naming Conventions
+**Bash (`lib/`):** 
+- `validate_project_name()`, `setup_python_environment()`, `create_*()`, `check_*()`
+
+**PowerShell (`lib/powershell/`):**
+- `Test-ProjectName`, `Initialize-PythonEnvironment`, `New-*`, `Test-*`
+
+### Error Handling Patterns
+**Bash:** Functions return 0 (success) or 1 (failure), use `set -e`
+**PowerShell:** Functions return `$true` (success) or `$false` (failure), use `$ErrorActionPreference = "Stop"`
+
+### Output Functions
+**Bash:** `print_status`, `print_success`, `print_warning`, `print_error`
+**PowerShell:** `Write-Status`, `Write-Success`, `Write-Warning`, `Write-Error`
