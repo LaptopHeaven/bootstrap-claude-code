@@ -144,7 +144,7 @@ function Show-Usage {
     if ($scriptName) {
         $scriptName = Split-Path $scriptName -Leaf
     } else {
-        $scriptName = "bootstrap-claude-python.ps1"
+        $scriptName = "bootstrap-claude-code-python.ps1"
     }
     
     Write-Host "Usage: .$scriptName <project_name> [options]"

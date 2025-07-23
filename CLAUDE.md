@@ -7,12 +7,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a **dual-platform** modular Bootstrap script system for creating Python projects with integrated Claude TDD + Scrumban workflow. The codebase consists of:
 
 ### Bash Implementation (Linux/macOS/WSL)
-- **Original monolithic bootstrap script** (`bootstrap-claude-python.sh`) - Single-file implementation
-- **Modular bootstrap system** (`bootstrap-claude-python-modular.sh` + `lib/` modules) - Refactored for flexibility
+- **Original monolithic bootstrap script** (`bootstrap-claude-code-python.sh`) - Single-file implementation
+- **Modular bootstrap system** (`bootstrap-claude-code-python-modular.sh` + `lib/` modules) - Refactored for flexibility
 - **Usage examples** (`examples/custom-bootstrap.sh`) - Demonstrates modular usage patterns
 
 ### PowerShell Implementation (Windows)
-- **PowerShell bootstrap scripts** (`bootstrap-claude-python.ps1`, `bootstrap-claude-python-modular.ps1`) - Native Windows versions
+- **PowerShell bootstrap scripts** (`bootstrap-claude-code-python.ps1`, `bootstrap-claude-code-python-modular.ps1`) - Native Windows versions
 - **PowerShell modules** (`lib/powershell/` modules) - PowerShell-native implementations
 - **PowerShell examples** (`examples/custom-bootstrap.ps1`) - Windows-specific usage patterns
 
@@ -39,8 +39,8 @@ The modular system has parallel implementations:
 #### Windows (PowerShell)
 ```powershell
 # Test PowerShell versions
-.\bootstrap-claude-python.ps1 test-project -Description "Test description"
-.\bootstrap-claude-python-modular.ps1 test-project -Description "Test description"
+.\bootstrap-claude-code-python.ps1 test-project -Description "Test description"
+.\bootstrap-claude-code-python-modular.ps1 test-project -Description "Test description"
 
 # Test individual module usage
 .\examples\custom-bootstrap.ps1 simple test-simple -Description "Simple project"
@@ -50,8 +50,8 @@ The modular system has parallel implementations:
 #### Linux/macOS/WSL (Bash)
 ```bash
 # Test bash versions
-./bootstrap-claude-python.sh test-project -d "Test description"
-./bootstrap-claude-python-modular.sh test-project -d "Test description"
+./bootstrap-claude-code-python.sh test-project -d "Test description"
+./bootstrap-claude-code-python-modular.sh test-project -d "Test description"
 
 # Test individual module usage
 ./examples/custom-bootstrap.sh simple test-simple "Simple project"  
@@ -75,7 +75,7 @@ Test-ProjectName "test-name"
 #### Bash Development  
 ```bash
 # Make scripts executable
-chmod +x bootstrap-claude-python.sh bootstrap-claude-python-modular.sh examples/custom-bootstrap.sh
+chmod +x bootstrap-claude-code-python.sh bootstrap-claude-code-python-modular.sh examples/custom-bootstrap.sh
 
 # Test module sourcing (for development)
 source lib/core.sh && validate_project_name "test-name"

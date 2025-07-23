@@ -1,4 +1,4 @@
-# Bootstrap Claude Python
+# Bootstrap Claude Code Python
 
 A modular bootstrap script system for creating Python projects with integrated Claude TDD + Scrumban workflow.
 
@@ -9,19 +9,19 @@ A modular bootstrap script system for creating Python projects with integrated C
 #### Windows (PowerShell)
 ```powershell
 # Using the modular version (recommended)
-.\bootstrap-claude-python-modular.ps1 my-awesome-project -Description "My awesome Python project"
+.\bootstrap-claude-code-python-modular.ps1 my-awesome-project -Description "My awesome Python project"
 
 # Using the original version (same result)
-.\bootstrap-claude-python.ps1 my-awesome-project -Description "My awesome Python project"
+.\bootstrap-claude-code-python.ps1 my-awesome-project -Description "My awesome Python project"
 ```
 
 #### Linux/macOS/WSL (Bash)
 ```bash
 # Using the modular version (recommended)
-./bootstrap-claude-python-modular.sh my-awesome-project -d "My awesome Python project"
+./bootstrap-claude-code-python-modular.sh my-awesome-project -d "My awesome Python project"
 
 # Using the original version (same result)
-./bootstrap-claude-python.sh my-awesome-project -d "My awesome Python project"
+./bootstrap-claude-code-python.sh my-awesome-project -d "My awesome Python project"
 ```
 
 ### Options
@@ -369,7 +369,7 @@ Projects created by this bootstrap include:
 
 ## Integration with Original Script
 
-The original `bootstrap-claude-python.sh` remains unchanged and fully functional. The new modular version (`bootstrap-claude-python-modular.sh`) provides the same functionality but with a cleaner, more maintainable architecture.
+The original `bootstrap-claude-code-python.sh` remains unchanged and fully functional. The new modular version (`bootstrap-claude-code-python-modular.sh`) provides the same functionality but with a cleaner, more maintainable architecture.
 
 Both scripts produce identical results - the modular version just offers more flexibility for custom use cases.
 
@@ -396,8 +396,8 @@ Both scripts produce identical results - the modular version just offers more fl
 #### Windows (PowerShell)
 ```powershell
 # Test both versions produce identical results
-.\bootstrap-claude-python.ps1 test1 -Description "Test project"
-.\bootstrap-claude-python-modular.ps1 test2 -Description "Test project"
+.\bootstrap-claude-code-python.ps1 test1 -Description "Test project"
+.\bootstrap-claude-code-python-modular.ps1 test2 -Description "Test project"
 # Compare directories manually or use tools like WinMerge
 
 # Test custom workflows
@@ -407,8 +407,8 @@ Both scripts produce identical results - the modular version just offers more fl
 #### Linux/macOS/WSL (Bash)
 ```bash
 # Test both versions produce identical results
-./bootstrap-claude-python.sh test1 -d "Test project"
-./bootstrap-claude-python-modular.sh test2 -d "Test project"
+./bootstrap-claude-code-python.sh test1 -d "Test project"
+./bootstrap-claude-code-python-modular.sh test2 -d "Test project"
 diff -r test1/ test2/
 
 # Test custom workflows
@@ -418,8 +418,8 @@ diff -r test1/ test2/
 #### Cross-Platform Testing
 ```bash
 # Test both PowerShell and Bash versions create identical projects
-.\bootstrap-claude-python.ps1 test-ps -Description "PowerShell test"
-./bootstrap-claude-python.sh test-bash -d "Bash test"
+.\bootstrap-claude-code-python.ps1 test-ps -Description "PowerShell test"
+./bootstrap-claude-code-python.sh test-bash -d "Bash test"
 # Compare the generated projects
 ```
 

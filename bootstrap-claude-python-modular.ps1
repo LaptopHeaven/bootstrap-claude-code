@@ -32,7 +32,7 @@ try {
 }
 catch {
     Write-Host "Failed to load PowerShell modules: $_" -ForegroundColor Red
-    Write-Host "Make sure you're running this script from the bootstrap-claude directory" -ForegroundColor Yellow
+    Write-Host "Make sure you're running this script from the bootstrap-claude-code directory" -ForegroundColor Yellow
     Write-Host "Required modules:" -ForegroundColor Yellow
     Write-Host "  - lib\powershell\core.ps1" -ForegroundColor Yellow
     Write-Host "  - lib\powershell\python.ps1" -ForegroundColor Yellow
